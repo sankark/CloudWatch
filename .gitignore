@@ -1,1 +1,4 @@
 !.settings
+
+/test.txt
+/src/main/java/AwsCredentials.properties
