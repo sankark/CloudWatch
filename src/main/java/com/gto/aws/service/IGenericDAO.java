@@ -1,5 +1,7 @@
 package com.gto.aws.service;
 
+import java.util.List;
+
 public interface IGenericDAO<T> {
 
 	public abstract T get(String id);
@@ -13,5 +15,7 @@ public interface IGenericDAO<T> {
 	public abstract void delete(T id);
 
 	public abstract T put(String id, T object);
+	
+	public abstract Iterable<String>  listKeys();
 
 }

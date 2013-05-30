@@ -10,6 +10,7 @@ import com.basho.riak.client.cap.UnresolvedConflictException;
 import com.basho.riak.client.convert.ConversionException;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
 public abstract class GenericDAO<T> implements IGenericDAO<T>{
 private Bucket bucket; 
@@ -78,6 +79,7 @@ public T get(T id){
 public T put(T object){
 	T myObject=null;
 	try {
+		
 		myObject = bucket.store(object).execute();
 	} catch (RiakRetryFailedException e) {
 		// TODO Auto-generated catch block
@@ -131,6 +133,7 @@ public void delete(T id){
 public T put(String id,T object){
 	T myObject=null;
 	try {
+		
 		myObject = bucket.store(id,object).execute();
 	} catch (RiakRetryFailedException e) {
 		// TODO Auto-generated catch block
@@ -144,5 +147,21 @@ public T put(String id,T object){
 	}
 	return myObject;
 }
+
+@Override
+public Iterable<String> listKeys(){
+	Iterable<String> myObject=null;
+
+		
+		try {
+			myObject = bucket.keys();
+		} catch (RiakException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	return myObject;
+}
+
 
 }

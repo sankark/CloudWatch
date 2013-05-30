@@ -14,7 +14,7 @@
     
      
     <!-- Worker -->
-    <rabbit:template id="workerTemplate"  message-converter="jobRequestConvertor" connection-factory="connectionFactory2"  exchange="JOB-EXCHANGE" routing-key="job.execution.request.ec2"/>
+    <rabbit:template id="jobRequestTemplate"  message-converter="jobRequestConvertor" connection-factory="connectionFactory2"  exchange="JOB-EXCHANGE" routing-key="job.execution.request.ec2"/>
     
     
 </beans>

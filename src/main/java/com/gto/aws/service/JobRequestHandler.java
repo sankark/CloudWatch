@@ -21,7 +21,7 @@ import com.gto.aws.model.User;
 public class JobRequestHandler {
 	@Autowired
 	private AmazonCloudWatchAsyncClient cloudWatchClient;
-    public List<Datapoint> handleMessage(GetMetricStatisticsRequest getMetricStatisticsRequest) {
+    public List<Datapoint> handleMessage() {
     	GetMetricStatisticsResult result = cloudWatchClient.getMetricStatistics(getMetricStatisticsRequest );
 		List<Datapoint> dataPoints = result.getDatapoints();
 			for (Iterator iterator = dataPoints.iterator(); iterator.hasNext();) {

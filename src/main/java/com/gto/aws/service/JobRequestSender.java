@@ -10,6 +10,7 @@ import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -18,7 +19,10 @@ import com.amazonaws.services.cloudwatch.model.GetMetricStatisticsRequest;
 import com.gto.aws.model.User;
 
 public class JobRequestSender {
-    public static void main(String[] args) throws Exception {
+	
+	@Autowired
+	RabbitTemplate jobRequestTemplate;
+    /*public static void main(String[] args) throws Exception {
         ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/spring/integration/Rabbit-Sender.xml");//loading beans
         RabbitTemplate  aTemplate = (RabbitTemplate ) context.getBean("workerTemplate");// getting a reference to the sender bean
        
@@ -51,5 +55,14 @@ public class JobRequestSender {
 				}
 			});
         }
-    }
+    }*/
+	
+	public void sendJobRequest(JobRequest request){
+		jobRequestTemplate.convertAndSend(request, new MessagePostProcessor() {				
+			public Message postProcessMessage(Message message) throws AmqpException {
+				message.getMessageProperties().setReplyToAddress(new Address("direct://JOB-EXCHANGE/job.response.ec2"));
+				return message;
+			}
+		});
+	}
 }

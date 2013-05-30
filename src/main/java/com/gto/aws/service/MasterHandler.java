@@ -15,13 +15,8 @@ public class MasterHandler {
 
 	
 
-	public void handleMessage(List<Datapoint> resultMessage) {
-
-		for (Iterator iterator = resultMessage.iterator(); iterator.hasNext();) {
-			Datapoint datapoint = (Datapoint) iterator.next();
-			System.out.println(datapoint.getAverage());
-			
-		}
+	public void handleMessage(JobRequest responseInstance) {
+       DAOFactory.getJobRequestDao().updateStatus(responseInstance.getJobRequestId(),responseInstance.getResponse());
 		
 
 	}
