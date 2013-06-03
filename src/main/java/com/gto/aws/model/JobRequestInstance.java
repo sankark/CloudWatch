@@ -3,6 +3,7 @@ package com.gto.aws.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.basho.riak.client.convert.RiakIndex;
 import com.basho.riak.client.convert.RiakKey;
 
 public class JobRequestInstance implements Serializable{
@@ -23,11 +24,11 @@ public String getStatus() {
 public void setStatus(String status) {
 	this.status = status;
 }
-public Date getDate() {
-	return date;
+public String getDate() {
+	return dateentry;
 }
-public void setDate(Date date) {
-	this.date = date;
+public void setDate(String date) {
+	this.dateentry =    date;
 }
 public Ec2CpuUtilizationJob getJob() {
 	return job;
@@ -38,9 +39,9 @@ public void setJob(Ec2CpuUtilizationJob job) {
 
 public JobRequestInstance()
 {
-	status = "pending";
+	
 }
-String status;
-Date date;
+@RiakIndex(name="status") transient private String status;
+@RiakIndex(name="dateentry") transient private String dateentry;
 Ec2CpuUtilizationJob job;
 }

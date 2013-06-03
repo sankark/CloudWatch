@@ -11,6 +11,12 @@ import com.amazonaws.services.cloudwatch.AmazonCloudWatchAsyncClient;
 import com.amazonaws.services.cloudwatch.model.Datapoint;
 import com.amazonaws.services.cloudwatch.model.GetMetricStatisticsRequest;
 import com.amazonaws.services.cloudwatch.model.GetMetricStatisticsResult;
+import com.basho.riak.client.RiakRetryFailedException;
+import com.basho.riak.client.bucket.Bucket;
+import com.basho.riak.client.cap.UnresolvedConflictException;
+import com.basho.riak.client.convert.ConversionException;
+import com.gto.aws.model.JobConstants;
+import com.gto.aws.model.JobRequestInstance;
 import com.gto.aws.model.User;
 /**
  * This class implements org.springframework.amqp.core.MessageListener.
@@ -19,17 +25,39 @@ import com.gto.aws.model.User;
  *  my.routingkey.1  specified in rabbt-listener-contet.xml file.
  */
 public class JobRequestHandler {
+
 	@Autowired
-	private AmazonCloudWatchAsyncClient cloudWatchClient;
-    public List<Datapoint> handleMessage() {
-    	GetMetricStatisticsResult result = cloudWatchClient.getMetricStatistics(getMetricStatisticsRequest );
-		List<Datapoint> dataPoints = result.getDatapoints();
-			for (Iterator iterator = dataPoints.iterator(); iterator.hasNext();) {
-			Datapoint datapoint = (Datapoint) iterator.next();
-			System.out.println(datapoint.getAverage());
-			
+	private CloudWatchService cloudWatchService;
+    public void handleMessage(JobRequest request) {
+    	try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	Bucket jobRequestBucket=null;
+    	try {
+			jobRequestBucket = RiakFactory.getRiakClient().fetchBucket( JobConstants.JOB_REQUESTS).execute();
+		} catch (RiakRetryFailedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	JobRequestInstance req = new JobRequestInstance();
+    	req.setJobRequestId(request.getJobRequestId());
+    	try {
+			req = jobRequestBucket.fetch(req).withConverter(ConvertorFactory.getJobRequestConvertor()).execute();
+		} catch (UnresolvedConflictException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RiakRetryFailedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ConversionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
     	
-    	return dataPoints;
+    	System.out.println(req.getJob().getJobName());
+    	cloudWatchService.processJob(req);
     }
 }

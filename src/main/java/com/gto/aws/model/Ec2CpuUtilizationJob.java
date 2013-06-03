@@ -1,8 +1,7 @@
 package com.gto.aws.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import com.basho.riak.client.convert.RiakIndex;
 import com.basho.riak.client.convert.RiakKey;
@@ -24,7 +23,7 @@ public void setJobId(String jobId) {
 @RiakIndex(name = "job-name") transient private String jobName;
 @RiakIndex(name = "job-type") transient private String jobType;
 @RiakIndex(name = "group-name") transient private String groupName;
-ArrayList<String> instances;
+Collection<String> instances ;
 
 public Ec2CpuUtilizationJob()
 {
@@ -49,10 +48,10 @@ public String getGroupName() {
 public void setGroupName(String groupName) {
 	this.groupName = groupName;
 }
-public ArrayList<String> getInstances() {
+public Collection<String> getInstances() {
 	return instances;
 }
-public void setInstances(ArrayList<String> instances) {
+public void setInstances(Collection<String> instances) {
 	this.instances = instances;
 }
 

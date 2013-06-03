@@ -1,0 +1,8 @@
+		String dt = "05012013";  // Start date
+java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMddyyyy");
+		java.util.Calendar c = java.util.Calendar.getInstance();
+		c.setTime(sdf.parse(dt));
+		c.add(java.util.Calendar.DATE, -1);  // number of days to add
+		dt = sdf.format(c.getTime());  // dt is now the new date
+		System.out.println(dt);
+		

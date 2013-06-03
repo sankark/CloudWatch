@@ -1,25 +1,38 @@
 package com.gto.aws.model;
 
-import com.amazonaws.services.cloudwatch.model.Datapoint;
-import com.basho.riak.client.convert.RiakKey;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
-public class Data extends Datapoint {
+
+public class Data implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+
 	
-	@RiakKey String id;
-	public String getId() {
-		return id;
+	String startTime;
+	public String getStartTime() {
+		return startTime;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
 	}
-	@Override
-	 public void setUnit(String unit)
-	    {
-	       super.setUnit(unit);
-	    }
+	public String getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+	public Collection<DataPoint> getData() {
+		return data;
+	}
+	public void setData(Collection<DataPoint> data) {
+		this.data = data;
+	}
+	String endTime;
+	Collection<DataPoint> data = new ArrayList<DataPoint>();
+
 
 }

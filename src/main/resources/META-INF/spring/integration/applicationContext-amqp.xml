@@ -48,7 +48,7 @@ http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd">
     <bean id="RequestMessageListenerContainer" class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
     <property name="connectionFactory" ref="connectionFactory"/>
     <property name="queueNames" value="JobWorkerQueue" />
-	<property name="concurrentConsumers" value="10" />
+	<property name="concurrentConsumers" value="1" />
 	<property name="messageListener" ref="jobRequestListener" />
 	<property name="autoStartup" value="true" />
   </bean>
@@ -56,7 +56,7 @@ http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd">
       <bean id="ResponseMessageListenerContainer" class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
     <property name="connectionFactory" ref="connectionFactory"/>
     <property name="queueNames" value="ResponseQueue" />
-	<property name="concurrentConsumers" value="2" />
+	<property name="concurrentConsumers" value="1" />
 	<property name="messageListener" ref="jobResponseListener" />
 	<property name="autoStartup" value="true" />
   </bean>
